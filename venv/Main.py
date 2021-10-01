@@ -40,6 +40,11 @@ for c in cnts:
 warped = four_point_transform(gray, displayCnt.reshape(4, 2))
 output = four_point_transform(image, displayCnt.reshape(4, 2))
 
+
+thresh = cv2.threshold(warped, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
+kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (1, 5))
+thresh = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel)
+
 def showImage(image):
     plt.imshow(image)
     plt.show()
@@ -49,6 +54,7 @@ def main():
     showImage(edged)
     showImage(warped)
     showImage(output)
+    showImage(thresh)
 
 if __name__ == "__main__":
     main();
